@@ -1,43 +1,58 @@
+
 from tkinter import *
-from tkinter import messagebox
 import pylab as pl
 from pylab import linspace, pi, plot, sin, cos, show
+import numpy as np
 
 okno = Tk()
 okno.config(padx=10,pady=10)
 okno.title("Cosinus - graf")
 
-fceMin=StringVar()
-fceMax=StringVar()
-fceVzorky=StringVar()
+fcePeriody=StringVar()
+fceFrekvence=StringVar()
+fceAmplituda=StringVar()
+fcePosun=StringVar()
 
 fceFrame=LabelFrame(okno, text="Parametry", padx=5, pady=5)
 fceFrame.grid(column=0,row=0, sticky=W+E)
 fceFrame.grid_columnconfigure(1,weight=1)
-fceMin.set("Od")
-fceMax.set("Do")
-fceVzorky.set("Vzorků")
-Entry(fceFrame, textvariable=fceMin, width=7).grid(column=1, row=0, sticky=E)
-Entry(fceFrame, textvariable=fceMax, width=7).grid(column=1, row=1, sticky=E)
-Entry(fceFrame, textvariable=fceVzorky, width=7).grid(column=1,row=2, sticky=E)
+
+fcePeriody.set("Periody")
+fceFrekvence.set("Frekvence")
+fceAmplituda.set("Amplituda")
+fcePosun.set("Fázový posun")
+
+Entry(fceFrame, textvariable=fcePeriody, width=11).grid(column=1, row=2, sticky=E)
+Entry(fceFrame, textvariable=fceFrekvence, width=11).grid(column=1,row=0, sticky=E)
+Entry(fceFrame, textvariable=fceAmplituda, width=11).grid(column=1, row=1, sticky=E)
+Entry(fceFrame, textvariable=fcePosun, width=11).grid(column=1, row=3, sticky=E)
 
 def cosGraf():
     try:    
-        od=float( fceMin.get())
-        do=float( fceMax.get())
-        vzorky=int( fceVzorky.get())
-        x=pl.linspace(od,do,vzorky)
-        y=pl.cos(x)
+        periody=int( fcePeriody.get())
+        frekvence=int( fceFrekvence.get())
+        amplituda=int( fceAmplituda.get())
+        faz_posun=int( fcePosun.get())
+        x=pl.linspace(0, periody*1/frekvence, frekvence*10000)
+        y=amplituda * (np.sin(2*pi*frekvence*x + np.deg2rad(faz_posun)))
 
-        pl.plot(x,y)
-        pl.xlabel("x")
-        pl.ylabel("cos x")
+        pl.plot(x,y, label="Graf cosinus")
+        pl.xlabel("t[s]")
+        pl.ylabel("U[V] | I[A] | P[W]")
         pl.grid(True)
         pl.show()
     except:
         pass
 
+def reset():
+    pl.close()
+    fcePeriody.set("Periody")
+    fceFrekvence.set("Frekvence")
+    fceAmplituda.set("Amplituda")
+    fcePosun.set("Fázový posun")
+
 Button(okno, text="Vytvoř graf",command=cosGraf).grid(column=1,row=0, sticky=W+E+N+S)
+Button(okno, text="Reset", command=reset).grid(column=1,row=1, sticky=W+E+N+S)
 
 
 okno.mainloop()
