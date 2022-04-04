@@ -29,10 +29,10 @@ Entry(fceFrame, textvariable=fcePosun, width=11).grid(column=1, row=3, sticky=E)
 
 def cosGraf():
     try:    
-        periody=int( fcePeriody.get())
-        frekvence=int( fceFrekvence.get())
-        amplituda=int( fceAmplituda.get())
-        faz_posun=int( fcePosun.get())
+        periody=float( fcePeriody.get())
+        frekvence=float( fceFrekvence.get())
+        amplituda=float( fceAmplituda.get())
+        faz_posun=float( fcePosun.get())
         x=pl.linspace(0, periody*1/frekvence, frekvence*10000)
         y=amplituda * (np.sin(2*pi*frekvence*x + np.deg2rad(faz_posun)))
 
